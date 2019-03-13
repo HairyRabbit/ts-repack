@@ -1,0 +1,5 @@
+import readPackage, { Package } from "read-pkg-up.ts";
+export default async function readPackageJson(): Promise<Package> {
+    const { pkg } = await readPackage();
+    return pkg;
+}

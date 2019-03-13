@@ -1,0 +1,35 @@
+{
+  "name": "ts-pkger",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HairyRabbit/pkger.git"
+  },
+  "author": "Rabbit <yfhj1990@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HairyRabbit/pkger/issues"
+  },
+  "homepage": "https://github.com/HairyRabbit/pkger#readme",
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/lodash": "^4.14.122",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^11.10.4",
+    "@types/read-pkg-up": "^3.0.1",
+    "@types/yargs": "^12.0.9",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "glob": "^7.1.3",
+    "lodash": "^4.17.11",
+    "mkdirp": "^0.5.1",
+    "read-pkg-up": "^4.0.0",
+    "yargs": "^13.2.2"
+  }
+}

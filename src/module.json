@@ -1,0 +1,117 @@
+{
+    "assert": {
+        "browser": "defunctzombie/commonjs-assert"
+    },
+    "async_hooks": {
+
+    },
+    "buffer": {
+        "browser": "feross/buffer"
+    },
+    "child_process": {
+
+    },
+    "cluster": {
+
+    },
+    "console": {
+        "browser": "Raynos/console-browserify"
+    },
+    "constants": {
+        "browser": "juliangruber/constants-browserify"
+    },
+    "crypto": {
+        "browser": "crypto-browserify/crypto-browserify"
+    },
+    "dgram": {
+        
+    },
+    "dns": {
+
+    },
+    "domain": {
+        "browser": "bevry/domain-browser"
+    },
+    "events": {
+        "browser": "Gozala/events"
+    },
+    "fs": {
+        "deno": "std/fs"
+    },    
+    "http": {
+        "deno": "std/http"
+    },
+    "http2": {
+        "deno": "std/http"
+    },
+    "https": {
+        "deno": "std/http"
+    },   
+    "inspector": {
+
+    },
+    "module": {
+    
+    },
+    "net": {
+
+    },
+    "os": {
+        "browser": "CoderPuppy/os-browserify"
+    },
+    "path": {
+        "browser": "substack/path-browserify",
+        "deno": "std/fs/path"
+    },
+    "perf_hooks": {
+
+    },
+    "process": {
+        "browser": "shtylman/node-process"
+    },
+    "punycode": {
+        "browser": "bestiejs/punycode.js"
+    },
+    "querystring": {
+        "browser": "mike-spainhower/querystring"
+    },
+    "readline": {
+
+    },
+    "repl": {
+
+    },
+    "stream": {
+        "browser": "substack/stream-browserify"
+    },
+    "string_decoder": {
+        "browser": "rvagg/string_decoder"
+    },
+    "sys": {
+        "browser": "defunctzombie/node-util"
+    },
+    "timers": {
+        "browser": "jryans/timers-browserify"
+    },
+    "tls": {
+
+    },
+    "trace_events": {
+        
+    },
+    "tty": {
+        "browser": "substack/tty-browserify"
+    },
+    "url": {
+        "browser": "defunctzombie/node-url"
+    },
+    "util": {
+        "browser": "defunctzombie/node-util"
+    },
+    "vm": {
+        "browser": "substack/vm-browserify"
+    },
+    "zlib": {
+        "browser": "devongovett/browserify-zlib"
+    }
+}
