@@ -1,10 +1,10 @@
-target:
+targets:
     1. cjs
     2. mjs
     3. deno
     4. esm
-    5. iife
+    5. types
 
-source:
-    1. ts
-    2. wasm
+usage:
+
+    repack cjs types
