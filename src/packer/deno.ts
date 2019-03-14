@@ -3,10 +3,12 @@ import * as path from "path"
 import transform from "../transformer"
 
 export default async function packDeno(rootNames: string[], config: ts.CompilerOptions): Promise<void> {
+  console.log(`[deno] start`)
   const root = config.baseUrl || process.cwd()
   const rootDir = config.rootDir || './'
-  const outDir = `__MODULE_DENO__`
-
+  const outDir = config.outDir + '/deno'
+  
+  console.log(`[deno] emit "${outDir}"`)
   rootNames.forEach(rootName => {
     const content: string | undefined = ts.sys.readFile(rootName)
     if (undefined === content)
@@ -23,6 +25,7 @@ export default async function packDeno(rootNames: string[], config: ts.CompilerO
 
     ts.sys.writeFile(destPath, result)
   })
+  console.log(`[deno] done`)
 }
 
 function replace(str: string): string {
