@@ -7,8 +7,7 @@ export const enum Target {
   /** commonjs */ CJS = 'cjs',
   /** modules */ MJS = 'mjs',
   /** modules but used for browser */ ESM = 'esm',
-  /** used for deno */ DENO = 'deno',
-  /** typescript type decls */ TYPES = 'types'
+  /** used for deno */ DENO = 'deno'
 }
 
 /** supports targets */
@@ -16,8 +15,7 @@ export const BUILDIN_TARGETS: Target[] = [
   Target.CJS,
   Target.MJS,
   Target.ESM,
-  Target.DENO,
-  Target.TYPES
+  Target.DENO
 ]
 
 interface Options {

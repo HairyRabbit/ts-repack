@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.11",
+    "util-extra": "0.0.13",
     "yargs": "^13.2.2"
   }
 }

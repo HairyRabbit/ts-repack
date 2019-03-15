@@ -13,7 +13,7 @@ export default function packCommonJS(rootNames: string[], config: ts.CompilerOpt
 }
 
 function overrideConfig(config: ts.CompilerOptions): ts.CompilerOptions {
-  config.target = ts.ScriptTarget.ES2015
+  config.target = ts.ScriptTarget.ES5
   config.module = ts.ModuleKind.CommonJS
   config.outDir = config.outDir + '/cjs'
   return config
