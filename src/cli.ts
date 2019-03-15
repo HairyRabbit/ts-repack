@@ -1,9 +1,7 @@
-import * as packs from './packer'
-import readConfig from './readConfig'
 import repack, { BUILDIN_TARGETS, Target } from './repack'
 import yargs from 'yargs'
 
-export default async function main(): Promise<void> {  
+export default function main(): void {  
   yargs
     .strict()
     .command({

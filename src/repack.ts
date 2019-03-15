@@ -31,6 +31,9 @@ export default function repack(targets: Target[], options: Partial<Options> = {}
   const config: ts.ParsedCommandLine = readConfig()
 
   targets.forEach(target => {
-    packs[target]([ ...config.fileNames ], { ...config.options })
+    packs[target](
+      [ ...config.fileNames ], 
+      { ...config.options }
+    )
   })
 }
