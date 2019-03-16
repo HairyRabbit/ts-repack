@@ -7,7 +7,7 @@ targets:
 
 usage:
 
-```shell
+```bash
 ts-repack # run default target, "cjs"
 ts-repack all # run all targets
 ts-repack cjs mjs # run one or more targets
