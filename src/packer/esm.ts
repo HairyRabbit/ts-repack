@@ -1,49 +1,63 @@
 import ts from "typescript"
 import * as path from "path"
 import * as url from "url"
-import transform from "../transformer"
+import emit, { replaceExtname } from '../emitter'
+import overrideOutDir from '../overrideOutDir'
+import transform, { NOTRANSFORM } from "../transformer"
+import isModule from '../isModule'
+import { Ok, Err, Result } from 'util-extra/container/result'
+
+export const DEFAULT_ESM_OUTDIR: string = 'esm'
+
+export const DEFAULT_ESM_CONFIG: ts.CompilerOptions = {
+  target: ts.ScriptTarget.ESNext,
+  module: ts.ModuleKind.ESNext,
+  sourceMap: true
+}
 
 export default function packCommonJS(rootNames: string[], config: ts.CompilerOptions): void {
   console.log(`[esm] start`)
-  const overridedConfig = overrideConfig(config)
-  const program = ts.createProgram(rootNames, overridedConfig)
-  console.log(`[esm] emit "${overridedConfig.outDir}"`)
-  program.emit(undefined, undefined, undefined, undefined, {
+  const outDir = overrideOutDir(config.outDir, DEFAULT_ESM_OUTDIR)
+  const overrideConfig = {
+    ...DEFAULT_ESM_CONFIG,
+    outDir
+  }
+  const program = ts.createProgram(rootNames, overrideConfig)
+  console.log(`[esm] emit "${outDir}"`)
+  program.emit(undefined, emit('.mjs'), undefined, undefined, {
     after: [transform(replace)]
   })
   console.log(`[esm] done`)
 }
 
-function overrideConfig(config: ts.CompilerOptions): ts.CompilerOptions {
-  config.target = ts.ScriptTarget.ES2015
-  config.module = ts.ModuleKind.ESNext
-  config.outDir = config.outDir + '/esm'
-  return config
-}
+function replace(str: string, decl: ts.ImportDeclaration): Result<string, Error> {
+  if (isModule(str)) {
+    /** @todos name mapper */
+    return Err(new Error(
+      `Module "${str}" may not works on browser, you should instead of polyfill or mock library`
+    ))
+  }
 
-function replace(str: string, decl: ts.ImportDeclaration): string | null {
-  if (isModule(str)) return null
   const src: ts.SourceFile = decl.getSourceFile()
-  if (undefined === src) return null
+  if (undefined === src) return Ok(NOTRANSFORM)
   const fileName: string = src.fileName
-  /** @todos name mapper */
-  console.log(fileName, str);
-  if (undefined === require.extensions[".ts"]) require.extensions[".ts"] = require.extensions[".js"]
+  console.log(fileName, str)
+
+  registerTSResolver()
+  
   const fileDirectory: string = path.dirname(fileName)
-  const absoulted = require.resolve(path.resolve(fileDirectory, str))
-  const relatived = formatRelativePath(path.relative(fileDirectory, absoulted))
-  return replaceExtname(relatived, ".js")
+  const absoulted: string = require.resolve(path.resolve(fileDirectory, str))
+  const relatived: string = formatRelativePath(path.relative(fileDirectory, absoulted))
+  
+  return Ok(replaceExtname(relatived, ".mjs"))
 }
 
-function isModule(str: string): boolean {
-  return !/[\/\\]/g.test(str)
-}
-
-function formatRelativePath(filePath: string) {
+function formatRelativePath(filePath: string): string {
   const formatten = filePath.split(path.sep).join(path.posix.sep)
   return url.format(formatten.startsWith("../") ? formatten : "./" + formatten)
 }
 
-function replaceExtname(filePath: string, ext: string): string {
-  return filePath.replace(path.extname(filePath), ext)
+function registerTSResolver(): void {
+  if (undefined !== require.extensions[".ts"]) return 
+  require.extensions[".ts"] = require.extensions[".js"]
 }

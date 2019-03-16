@@ -1,20 +1,27 @@
 import ts from 'typescript'
-import transform from '../transformer'
+import overrideOutDir from '../overrideOutDir'
+
+export const DEFAULT_CJS_OUTDIR: string = 'cjs'
+
+export const DEFAULT_CJS_CONFIG: ts.CompilerOptions = {
+  target: ts.ScriptTarget.ES5,
+  module: ts.ModuleKind.CommonJS,
+  sourceMap: true,
+  declaration: true,
+  declarationMap: true
+}
 
 export default function packCommonJS(rootNames: string[], config: ts.CompilerOptions): void {
   console.log(`[cjs] start`)
-  const overridedConfig = overrideConfig(config)
-  const program = ts.createProgram(rootNames, overridedConfig)
-  console.log(`[cjs] emit "${overridedConfig.outDir}"`)
+  const outDir = overrideOutDir(config.outDir, DEFAULT_CJS_OUTDIR)
+  const overrideConfig = {
+    ...DEFAULT_CJS_CONFIG,
+    outDir
+  }
+  const program = ts.createProgram(rootNames, overrideConfig)
+  console.log(`[cjs] emit "${outDir}"`)
   program.emit(undefined, undefined, undefined, undefined, {
-    after: [transform()]
+    after: []
   })
   console.log(`[cjs] done`)
-}
-
-function overrideConfig(config: ts.CompilerOptions): ts.CompilerOptions {
-  config.target = ts.ScriptTarget.ES5
-  config.module = ts.ModuleKind.CommonJS
-  config.outDir = config.outDir + '/cjs'
-  return config
 }

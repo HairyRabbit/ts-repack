@@ -1,31 +1,28 @@
-import * as path from 'path'
 import ts from 'typescript'
-import transform from '../transformer'
+import emit from '../emitter'
+import overrideOutDir from '../overrideOutDir'
+
+export const DEFAULT_MJS_OUTDIR: string = 'mjs'
+
+export const DEFAULT_MJS_CONFIG: ts.CompilerOptions = {
+  target: ts.ScriptTarget.ESNext,
+  module: ts.ModuleKind.ESNext,
+  sourceMap: true,
+  declaration: true,
+  declarationMap: true
+}
 
 export default async function packModuleJS(rootNames: string[], config: ts.CompilerOptions): Promise<void> {
   console.log(`[mjs] start`)
-  const overridedConfig = overrideConfig(config)
-  const program = ts.createProgram(rootNames, overridedConfig)
-  console.log(`[mjs] emit "${overridedConfig.outDir}"`)
-  program.emit(undefined, emit, undefined, undefined, {
-    after: [ transform() ]
+  const outDir = overrideOutDir(config.outDir, DEFAULT_MJS_OUTDIR)
+  const overrideConfig = {
+    ...DEFAULT_MJS_CONFIG,
+    outDir
+  }
+  const program = ts.createProgram(rootNames, overrideConfig)
+  console.log(`[mjs] emit "${outDir}"`)
+  program.emit(undefined, emit('.mjs'), undefined, undefined, {
+    after: []
   })
   console.log(`[mjs] done`)
-}
-
-function overrideConfig(config: ts.CompilerOptions): ts.CompilerOptions {
-  config.target = ts.ScriptTarget.ESNext
-  config.module = ts.ModuleKind.ESNext
-  // config.outDir = '__MODULE_MJS__'
-  config.outDir = config.outDir + '/mjs'
-  return config
-}
-
-function emit(fileName: string, data: string) {
-  const ext = path.extname(fileName)
-  return ts.sys.writeFile('' === ext ? fileName : replaceExtname(fileName, '.mjs'), data)
-}
-
-function replaceExtname(filePath: string, ext: string): string {
-  return filePath.replace(path.extname(filePath), ext)
 }
