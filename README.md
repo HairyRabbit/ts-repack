@@ -4,8 +4,11 @@ targets:
     2. mjs
     3. deno
     4. esm
-    5. types
 
 usage:
 
-    repack cjs types
+```shell
+ts-repack # run default target, "cjs"
+ts-repack all # run all targets
+ts-repack cjs mjs # run one or more targets
+```
