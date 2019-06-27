@@ -18,7 +18,8 @@ export const DEFAULT_ESM_CONFIG: ts.CompilerOptions = {
 
 export default function packCommonJS(rootNames: string[], config: ts.CompilerOptions, options: Options): void {
   console.log(`[esm] start`)
-  const outDir = overrideOutDir(config.outDir, DEFAULT_ESM_OUTDIR)
+  const { output } = options
+  const outDir = output || overrideOutDir(config.outDir, DEFAULT_ESM_OUTDIR)
   const overrideConfig = {
     ...DEFAULT_ESM_CONFIG,
     outDir

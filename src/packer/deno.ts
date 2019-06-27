@@ -12,7 +12,8 @@ export default function packDeno(rootNames: string[], config: ts.CompilerOptions
   console.log(`[deno] start`)
   const root = config.baseUrl || process.cwd()
   const rootDir = config.rootDir || './'
-  const outDir = overrideOutDir(config.outDir, 'deno')
+  const { output } = options
+  const outDir = output || overrideOutDir(config.outDir, DEFAULT_DENO_OUTDIR)
   const printer = ts.createPrinter()
   console.log(`[deno] emit "${outDir}"`)
   const results: [string, string][] = rootNames.map<[string, string]>(rootName => {

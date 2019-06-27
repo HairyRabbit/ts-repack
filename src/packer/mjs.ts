@@ -15,7 +15,8 @@ export const DEFAULT_MJS_CONFIG: ts.CompilerOptions = {
 
 export default async function packModuleJS(rootNames: string[], config: ts.CompilerOptions, options: Options): Promise<void> {
   console.log(`[mjs] start`)
-  const outDir = overrideOutDir(config.outDir, DEFAULT_MJS_OUTDIR)
+  const { output } = options
+  const outDir = output || overrideOutDir(config.outDir, DEFAULT_MJS_OUTDIR)
   const overrideConfig = {
     ...DEFAULT_MJS_CONFIG,
     outDir
