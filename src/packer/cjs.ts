@@ -1,5 +1,6 @@
 import ts from 'typescript'
 import overrideOutDir from '../overrideOutDir'
+import { Options } from '../repack'
 
 export const DEFAULT_CJS_OUTDIR: string = 'cjs'
 
@@ -11,9 +12,10 @@ export const DEFAULT_CJS_CONFIG: ts.CompilerOptions = {
   declarationMap: true
 }
 
-export default function packCommonJS(rootNames: string[], config: ts.CompilerOptions): void {
+export default function packCommonJS(rootNames: string[], config: ts.CompilerOptions, options: Options): void {
   console.log(`[cjs] start`)
-  const outDir = overrideOutDir(config.outDir, DEFAULT_CJS_OUTDIR)
+  const { output } = options
+  const outDir = output || overrideOutDir(config.outDir, DEFAULT_CJS_OUTDIR)
   const overrideConfig = {
     ...DEFAULT_CJS_CONFIG,
     outDir

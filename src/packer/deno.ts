@@ -4,10 +4,11 @@ import overrideOutDir from '../overrideOutDir'
 import transform from "../transformer"
 import { Result, Ok, Err } from "util-extra/container/result"
 import isModule from "../isModule"
+import { Options } from "../repack"
 
 export const DEFAULT_DENO_OUTDIR: string = 'deno'
 
-export default function packDeno(rootNames: string[], config: ts.CompilerOptions): void {
+export default function packDeno(rootNames: string[], config: ts.CompilerOptions, options: Options): void {
   console.log(`[deno] start`)
   const root = config.baseUrl || process.cwd()
   const rootDir = config.rootDir || './'

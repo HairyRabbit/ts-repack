@@ -12,21 +12,25 @@ export default function transformer<T extends ts.Node>(replace: ModulePathReplac
     const visitor: ts.Visitor = node => {
       if(undefined === replace) return node
       if (ts.isSourceFile(node)) return ts.visitEachChild(node, visitor, context)
-      else if (ts.isImportDeclaration(node)) {        
-        const decl = node
-        return ts.visitEachChild(node, node => {
-          if (!ts.isStringLiteral(node)) return node
-          const raw = node.text
-          const pathString = raw.replace(/[\'\"]/g, "")
-          const replaced = replace(pathString, decl, context)
-          if(isErr(replaced)) throw replaced.unwrapErr()
-          const replacedStr = replaced.unwrap()
-          if(replacedStr === pathString || replacedStr === NOTRANSFORM) return node
-          return ts.createStringLiteral(replacedStr)
-        }, context)
+      else if (ts.isImportDeclaration(node)) {
+        const decl: ts.ImportDeclaration = node
+        return ts.visitEachChild(node, transformModulePath(decl, context), context)
       }
       else return node
     }
-    return node => ts.visitNode(node, visitor);
+    return node => ts.visitNode(node, visitor)
+  }
+
+  function transformModulePath(decl: ts.ImportDeclaration, context: ts.TransformationContext): ts.Visitor {
+    return node => {
+      if (!ts.isStringLiteral(node)) return node
+      const raw = node.text
+      const pathString = raw.replace(/[\'\"]/g, "")
+      const replaced = replace(pathString, decl, context)
+      if (isErr(replaced)) throw replaced.unwrapErr()
+      const replacedStr = replaced.unwrap()
+      if (replacedStr === pathString || replacedStr === NOTRANSFORM) return node
+      return ts.createStringLiteral(replacedStr)
+    }
   }
 }

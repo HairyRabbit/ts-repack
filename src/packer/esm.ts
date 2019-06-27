@@ -6,6 +6,7 @@ import overrideOutDir from '../overrideOutDir'
 import transform, { NOTRANSFORM } from "../transformer"
 import isModule from '../isModule'
 import { Ok, Err, Result } from 'util-extra/container/result'
+import { Options } from "../repack"
 
 export const DEFAULT_ESM_OUTDIR: string = 'esm'
 
@@ -15,7 +16,7 @@ export const DEFAULT_ESM_CONFIG: ts.CompilerOptions = {
   sourceMap: true
 }
 
-export default function packCommonJS(rootNames: string[], config: ts.CompilerOptions): void {
+export default function packCommonJS(rootNames: string[], config: ts.CompilerOptions, options: Options): void {
   console.log(`[esm] start`)
   const outDir = overrideOutDir(config.outDir, DEFAULT_ESM_OUTDIR)
   const overrideConfig = {
@@ -41,7 +42,7 @@ function replace(str: string, decl: ts.ImportDeclaration): Result<string, Error>
   const src: ts.SourceFile = decl.getSourceFile()
   if (undefined === src) return Ok(NOTRANSFORM)
   const fileName: string = src.fileName
-  console.log(fileName, str)
+  // console.log(fileName, str)
 
   registerTSResolver()
   

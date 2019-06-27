@@ -1,6 +1,7 @@
 import ts from 'typescript'
 import emit from '../emitter'
 import overrideOutDir from '../overrideOutDir'
+import { Options } from '../repack'
 
 export const DEFAULT_MJS_OUTDIR: string = 'mjs'
 
@@ -12,7 +13,7 @@ export const DEFAULT_MJS_CONFIG: ts.CompilerOptions = {
   declarationMap: true
 }
 
-export default async function packModuleJS(rootNames: string[], config: ts.CompilerOptions): Promise<void> {
+export default async function packModuleJS(rootNames: string[], config: ts.CompilerOptions, options: Options): Promise<void> {
   console.log(`[mjs] start`)
   const outDir = overrideOutDir(config.outDir, DEFAULT_MJS_OUTDIR)
   const overrideConfig = {

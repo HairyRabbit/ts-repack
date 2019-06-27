@@ -1,38 +1,42 @@
-import repack, { BUILDIN_TARGETS, Target } from './repack'
+import repack, { BUILDIN_TARGETS, Target, Options } from './repack'
 import yargs from 'yargs'
 
 export default function main(): void {  
-  yargs
+  (yargs as yargs.Argv<Options>)
     .strict()
     .command({
-      command: `$0 [targets...]`,
+      command: `$0 <target>`,
       describe: 'repack source by target',
       handler,
-      builder: (yargs: yargs.Argv): yargs.Argv => {
-        return yargs.positional('targets', {
-          describe: 'targets',
+      builder: (yargs: yargs.Argv<Options>): yargs.Argv<Options> => {
+        return yargs.positional('target', {
+          describe: 'task target',
           type: 'string',
-          choices: (BUILDIN_TARGETS as string[]).concat('all')
+          choices: BUILDIN_TARGETS
         })
       }
     })
-    .version()
-    .alias('v', 'version')    
+    .option(`output`, {
+      alias: `o`,
+      describe: `The output dir`,
+      type: `string`,
+      defualt: `dist`
+    })
     .help('h')
     .alias('h', 'help')
     .argv
 }
 
-function handler(argv: yargs.Arguments): void {  
-  if(!(Array.isArray(argv.targets) && argv.targets.length > 0)) {
+function handler(args: yargs.Arguments<Options>): void {
+  const { target, output } = args
+  if(!target) {
     yargs.showHelp()
     return
   }
 
-  const targets: string[] = argv.targets
-  const tasks: Target[] = targets.includes('all') 
-    ? BUILDIN_TARGETS 
-    : targets as Target[]
+  const options: Options = {
+    output: output
+  }
   
-  repack(tasks)
+  repack(target as Target, options)
 }
