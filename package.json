@@ -22,13 +22,11 @@
   },
   "homepage": "https://github.com/HairyRabbit/ts-repack#readme",
   "devDependencies": {
-    "@types/lodash": "^4.14.122",
     "@types/node": "^11.10.4",
     "@types/yargs": "^12.0.9",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "lodash": "^4.17.11",
     "util-extra": "0.0.15",
     "yargs": "^13.2.2"
   }
