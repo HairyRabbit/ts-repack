@@ -6,7 +6,7 @@ import { Options } from '../repack'
 export const DEFAULT_MJS_OUTDIR: string = 'mjs'
 
 export const DEFAULT_MJS_CONFIG: ts.CompilerOptions = {
-  target: ts.ScriptTarget.ESNext,
+  target: ts.ScriptTarget.ES2015,
   module: ts.ModuleKind.ESNext,
   sourceMap: true,
   declaration: true,
